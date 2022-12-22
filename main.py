@@ -9,7 +9,7 @@ max_sleep = 30  # 两次请求间隔最长时间，越大耗时越久，但被�
 min_sleep = 10  # 两次请求间隔最短时间
 
 headers = {
-    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:107.0) Gecko/20100101 Firefox/107.0',
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.84 Safari/537.36 HBPC/12.1.1.301',
     'Accept-Language': 'zh-CN,en-US;q=0.7,en;q=0.3',
     'DNT': '1',
     'Connection': 'keep-alive',
@@ -33,7 +33,8 @@ questionnaire_remain = 0
 def check_cookie():
     req = BeautifulSoup(get(home_url, cookies=cookies, headers=headers).text, features='lxml')
     if req.title.string == '用户登录':
-        print("给定的cookie无法登录学习通，请检查")
+        print(req.text)
+        input("给定的cookie无法登录学习通，请检查")
         exit(2333)
     for name in req.find_all('h3'):
         try:
@@ -86,7 +87,7 @@ def get_questionnaire_list():
             n = n + 3
             link_data = soup[n]
             n = n + 1
-            if link_data.string == "已过期" or link_data.string is None:
+            if link_data.string == "已过期" or link_data.string == "查看详情" or link_data.string is None:
                 continue
             else:
                 questionnaire_remain = questionnaire_remain + 1
@@ -137,9 +138,10 @@ groupTargetIds=616134&616134_type=4&616134_chooseSetUp=1&jumpInfo=%7B&616134=%E6
 cookie = input("请在浏览器中登录i.chaoxing.com，然后单击F12，选择“网络”，然后刷新页面，选择base?开头的第一个请求，点击该请求，并在弹出的对话框的“请求头”一栏下找到Cookie: ，右键选择“复制值”，然后粘贴到这里，单击回车\n")
 system("cls")
 raw_cookie_to_dist()
+sleep(0.5)
 get_questionnaire_list()
 if questionnaire_remain == 0:
-    print("你都填完了啊，没我什么事了，我走了")
+    input("你都填完了啊，没我什么事了，我走了")
     exit()
 print("您还有%d个问卷未填（已排除已过期的问卷），请按回车键确认：" % questionnaire_remain)
 n = 1
