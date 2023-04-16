@@ -8,7 +8,7 @@ max_sleep = 30  # 两次请求间隔最长时间，越大耗时越久，但被�
 min_sleep = 10  # 两次请求间隔最短时间
 
 headers = {
-    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.84 Safari/537.36 HBPC/12.1.1.301',
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/112.0',
     'Accept-Language': 'zh-CN,en-US;q=0.7,en;q=0.3',
     'DNT': '1',
     'Connection': 'keep-alive',
