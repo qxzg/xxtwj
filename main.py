@@ -79,7 +79,9 @@ def get_questionnaire_list():
 
         questionnaire_count = req['html'].count('<tr>')
         soup = BeautifulSoup(req['html'], features='lxml').find_all('td')
+
         n = 0
+        valid_mark = 0
         for j in range(questionnaire_count):
             questionnaire_data = {}
             n = n + 1
@@ -94,6 +96,7 @@ def get_questionnaire_list():
             if link_data.string == "已过期" or link_data.string == "查看详情" or link_data.string is None:
                 continue
             else:
+                valid_mark = 1
                 questionnaire_remain = questionnaire_remain + 1
                 link_info = link_data.a['onclick'][18:-2].split(',')
                 questionnaire_data['alreadyId'] = link_info[0]
@@ -101,6 +104,9 @@ def get_questionnaire_list():
                 questionnaire_data['questionnaireId'] = link_info[2]
             questionnaire_list.append(questionnaire_data)
 
+        if not valid_mark:
+            print("本页已无未填写的问卷")
+            return
 
 def do_questionnaire(questionnaire_data: dict):
     payload = \
@@ -146,7 +152,7 @@ sleep(0.5)
 get_questionnaire_list()
 # print(questionnaire_list)
 if questionnaire_remain == 0:
-    input("你都填完了啊，没我什么事了，我走了")
+    input("你都填完了啊，没我什么事了，润了润了")
     exit()
 print("您还有%d个问卷未填（已排除已过期的问卷），请按回车键确认：" % questionnaire_remain)
 n = 1
